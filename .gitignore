@@ -1,0 +1,6 @@
+torch_sys/libtorch-extract
+torch_sys/*.zip
+torch_sys/*.o
+torch_sys/*.dylib
+torch_sys/*.so
+torch_sys/*.dll
