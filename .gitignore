@@ -4,3 +4,5 @@ torch_sys/*.o
 torch_sys/*.dylib
 torch_sys/*.so
 torch_sys/*.dll
+
+.vscode
