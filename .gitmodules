@@ -1,3 +1,6 @@
 [submodule "torch_sys/tch-rs"]
 	path = torch_sys/tch-rs
 	url = https://github.com/LaurentMazare/tch-rs
+[submodule "torch_sys/libclang-deno"]
+	path = torch_sys/libclang-deno
+	url = git@github.com:littledivy/libclang-deno.git
