@@ -25,7 +25,11 @@ function generate(c) {
   cursor.visitChildren((cursor) => {
     switch (cursor.kind) {
       case CXCursorKind.CXCursor_FunctionDecl:
-        const name = cursor.getMangling();
+        let name = cursor.getMangling();
+        // Mangling mongling mingling mungling...
+        if (name.startsWith("_")) {
+          name = name.slice(1);
+        }
         const repr = cursor.getDisplayName();
         const len = cursor.getNumberOfArguments();
         const args = [];
@@ -38,8 +42,8 @@ function generate(c) {
         }
 
         const result = cursor.getResultType();
-        s += `  // ${repr}\n`;
-        s += `  ${name}: { parameters: [${
+        s += `    // ${repr}\n`;
+        s += `    ${name}: { parameters: [${
           args.map((a) => `"${ffiType[a.type.kind]}"`).join(", ")
         }], result: "${ffiType[result.kind]}" },\n`;
 
@@ -50,7 +54,7 @@ function generate(c) {
     return CXChildVisitResult.CXChildVisit_Continue;
   });
 
-  return `const lib = Deno.dlopen("./libtch.dylib", {${s}});\n\nexport default lib;`;
+  return `export function open(path: string) {\n  return Deno.dlopen(path, {${s}  });\n}\n`;
 }
 
 await Promise.all(
