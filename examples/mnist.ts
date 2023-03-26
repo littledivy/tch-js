@@ -33,64 +33,71 @@ for (let i = 0; i < 100; i++) {
 }
 
 const test_accuracy = model
-    .forward(test_images)
-    .argmax(-1)
-    .eq(test_labels)
-    .to_float_type().mean();
+  .forward(test_images)
+  .argmax(-1)
+  .eq(test_labels)
+  .to_float_type().mean();
 
 test_accuracy.print();
-
 
 const window = new WindowBuilder("MNIST tch-js", 800, 600).build();
 const canvas = window.canvas();
 
-const [data, samples, size] = await read_image_file(`${path}/t10k-images-idx3-ubyte`);
+const [data, samples, size] = await read_image_file(
+  `${path}/t10k-images-idx3-ubyte`,
+);
 const labels = await read_labels(`${path}/t10k-labels-idx1-ubyte`);
 
 let test_index = 0;
 
 function next_test() {
-    return [new Uint8Array(data).subarray(test_index * 28 * 28, (test_index + 1) * 28 * 28), labels[test_index]];
+  return [
+    new Uint8Array(data).subarray(
+      test_index * 28 * 28,
+      (test_index + 1) * 28 * 28,
+    ),
+    labels[test_index],
+  ];
 }
 
 function predict_step(data: Tensor, expected: number) {
-    const test_accuracy = model
-        .forward(data)
-        .argmax(-1)
-        .mean();
+  const test_accuracy = model
+    .forward(data)
+    .argmax(-1)
+    .mean();
 
-    test_accuracy.print();
-    test_index++;
+  test_accuracy.print();
+  test_index++;
 }
 
 for (const event of window.events()) {
-    if (event.type == EventType.Quit) {
-        break;
-    } else if (event.type == EventType.KeyDown) {
-        const [s, expected] = next_test();
-        canvas.setDrawColor(0, 0, 0, 255);
-        canvas.clear();
-        canvas.setDrawColor(255, 255, 255, 255);
-        for (let i = 0; i < s.byteLength; i++) {
-            let pixel = s[i];
-            if (pixel > 0) {
-                let x = i % 28;
-                let y = Math.floor(i / 28);
-                for (let j = 0; j < 4; j++) {
-                    for (let k = 0; k < 4; k++) {
-                        canvas.drawPoint(x * 4 + j, y * 4 + k);
-                    }
-                }
-            }
+  if (event.type == EventType.Quit) {
+    break;
+  } else if (event.type == EventType.KeyDown) {
+    const [s, expected] = next_test();
+    canvas.setDrawColor(0, 0, 0, 255);
+    canvas.clear();
+    canvas.setDrawColor(255, 255, 255, 255);
+    for (let i = 0; i < s.byteLength; i++) {
+      let pixel = s[i];
+      if (pixel > 0) {
+        let x = i % 28;
+        let y = Math.floor(i / 28);
+        for (let j = 0; j < 4; j++) {
+          for (let k = 0; k < 4; k++) {
+            canvas.drawPoint(x * 4 + j, y * 4 + k);
+          }
         }
-
-        const f = new Float32Array(s.length);
-        for (let i = 0; i < s.length; i++) {
-            f[i] = s[i];
-        }
-
-        predict_step(Tensor.of(f), expected);
-
-        canvas.present();
+      }
     }
+
+    const f = new Float32Array(s.length);
+    for (let i = 0; i < s.length; i++) {
+      f[i] = s[i];
+    }
+
+    predict_step(Tensor.of(f), expected);
+
+    canvas.present();
+  }
 }
