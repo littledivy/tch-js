@@ -89,6 +89,11 @@ export class Tensor {
     return new Tensor(Deno.UnsafePointer.create(bTensor[0]));
   }
 
+  f_uniform_(a: number, b: number) {
+    call(() => sys.atg_uniform_(pTensor, this.#c_tensor, a, b));
+    return new Tensor(Deno.UnsafePointer.create(bTensor[0]));
+  }    
+
   to_float_type() {
     call(() => sys.atg_totype(pTensor, this.#c_tensor, 6));
     return new Tensor(Deno.UnsafePointer.create(bTensor[0]));

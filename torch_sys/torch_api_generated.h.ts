@@ -4831,7 +4831,7 @@ export function open(path: string, symbols?: any) {
     // atg_uniform(int *, int, double, double)
     atg_uniform: { parameters: ["pointer", "i32", "f64", "f64"], result: "void" },
     // atg_uniform_(int *, int, double, double)
-    atg_uniform_: { parameters: ["pointer", "i32", "f64", "f64"], result: "void" },
+    atg_uniform_: { parameters: ["buffer", "pointer", "f64", "f64"], result: "void" },
     // atg_uniform_out(int *, int, int, double, double)
     atg_uniform_out: { parameters: ["pointer", "i32", "i32", "f64", "f64"], result: "void" },
     // atg_unique_consecutive(int *, int, int, int, int, int)

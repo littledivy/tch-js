@@ -4,7 +4,8 @@ import { Tensor } from "./tensor.ts";
 type Layer = (xs: Tensor) => Tensor;
 
 export function Linear(in_features: number, out_features: number, options: { bias?: boolean, optim?: Optimizer } = { bias: true }): Layer {
-  const ws = Tensor.zeroes([BigInt(in_features), BigInt(out_features)]).set_requires_grad();
+  const bound = 1 / Math.sqrt(in_features);
+  const ws = Tensor.zeroes([BigInt(in_features), BigInt(out_features)]).f_uniform_(-bound, bound).set_requires_grad();
   const bs = options?.bias ? Tensor.zeroes([BigInt(out_features)]).set_requires_grad() : null;
 
   if (options?.optim) {

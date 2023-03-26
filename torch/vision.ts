@@ -16,7 +16,7 @@ async function read_u32(reader: Deno.Reader): Promise<number> {
     return new DataView(buf.buffer).getUint32(0, false);
 }
 
-async function read_labels(path: string): Promise<Tensor> {
+export async function read_labels(path: string): Promise<Tensor> {
     const file = await Deno.open(path);
     await check_magic_number(file, 2049);
     const samples = await read_u32(file);
@@ -29,10 +29,10 @@ async function read_labels(path: string): Promise<Tensor> {
     for (let i = 0; i < data.length; i++) {
         data[i] = buf[i];
     }
-    return Tensor.of(data).to_int_type();
+    return data;
 }
 
-async function read_image_file(path: string): Promise<Tensor> {
+export async function read_image_file(path: string): Promise<Tensor> {
     const file = await Deno.open(path);
     await check_magic_number(file, 2051);
     const samples = await read_u32(file);
@@ -47,10 +47,10 @@ async function read_image_file(path: string): Promise<Tensor> {
 
     const data = new Float32Array(samples * rows * cols);
     for (let i = 0; i < data.length; i++) {
-        data[i] = buf[i] / 255;
+        data[i] = buf[i];
     }
 
-    return Tensor.of(data).view([BigInt(samples), BigInt(rows * cols)]);
+    return [data, samples, rows * cols];
 }
 
 export function load_mnist(
@@ -66,7 +66,13 @@ export function load_mnist(
     const labels = train ? train_labels : test_labels;
 
     return Promise.all([
-        read_image_file(images),
-        read_labels(labels),
+        (async () => {
+            const [data, samples, size] = await read_image_file(images);
+            return Tensor.of(data).view([BigInt(samples), BigInt(size)]);
+        })(),
+        (async () => {
+            const data = await read_labels(labels);
+            return Tensor.of(data).to_int_type();
+        })(),
     ]);
 }
