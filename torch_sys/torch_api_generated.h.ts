@@ -1,4 +1,4 @@
-export function open(path: string) {
+export function open(path: string, symbols?: any) {
   return Deno.dlopen(path, {
     // atg___and__(int *, int, int)
     atg___and__: { parameters: ["pointer", "i32", "i32"], result: "void" },
@@ -919,7 +919,7 @@ export function open(path: string) {
     // atg_adaptive_max_pool3d_out(int *, int, int, int, int *, int)
     atg_adaptive_max_pool3d_out: { parameters: ["pointer", "i32", "i32", "i32", "pointer", "i32"], result: "void" },
     // atg_add(int *, int, int)
-    atg_add: { parameters: ["pointer", "i32", "i32"], result: "void" },
+    atg_add: { parameters: ["buffer", "pointer", "pointer"], result: "void" },
     // atg_add_(int *, int, int)
     atg_add_: { parameters: ["pointer", "i32", "i32"], result: "void" },
     // atg_add_out(int *, int, int, int)
@@ -1071,7 +1071,7 @@ export function open(path: string) {
     // atg_arctanh_out(int *, int, int)
     atg_arctanh_out: { parameters: ["pointer", "i32", "i32"], result: "void" },
     // atg_argmax(int *, int, int, int, int)
-    atg_argmax: { parameters: ["pointer", "i32", "i32", "i32", "i32"], result: "void" },
+    atg_argmax: { parameters: ["buffer", "pointer", "i64", "i8", "i8"], result: "void" },
     // atg_argmax_out(int *, int, int, int, int, int)
     atg_argmax_out: { parameters: ["pointer", "i32", "i32", "i32", "i32", "i32"], result: "void" },
     // atg_argmin(int *, int, int, int, int)
@@ -1849,13 +1849,13 @@ export function open(path: string) {
     // atg_empty_strided_out(int *, int, int *, int, int *, int)
     atg_empty_strided_out: { parameters: ["pointer", "i32", "pointer", "i32", "pointer", "i32"], result: "void" },
     // atg_eq(int *, int, int)
-    atg_eq: { parameters: ["pointer", "i32", "i32"], result: "void" },
+    atg_eq: { parameters: ["buffer", "pointer", "pointer"], result: "void" },
     // atg_eq_(int *, int, int)
     atg_eq_: { parameters: ["pointer", "i32", "i32"], result: "void" },
     // atg_eq_scalar_out(int *, int, int, int)
     atg_eq_scalar_out: { parameters: ["pointer", "i32", "i32", "i32"], result: "void" },
     // atg_eq_tensor(int *, int, int)
-    atg_eq_tensor: { parameters: ["pointer", "i32", "i32"], result: "void" },
+    atg_eq_tensor: { parameters: ["buffer", "pointer", "pointer"], result: "void" },
     // atg_eq_tensor_(int *, int, int)
     atg_eq_tensor_: { parameters: ["pointer", "i32", "i32"], result: "void" },
     // atg_eq_tensor_out(int *, int, int, int)
@@ -2631,9 +2631,9 @@ export function open(path: string) {
     // atg_lerp_tensor_out(int *, int, int, int, int)
     atg_lerp_tensor_out: { parameters: ["pointer", "i32", "i32", "i32", "i32"], result: "void" },
     // atg_less(int *, int, int)
-    atg_less: { parameters: ["pointer", "i32", "i32"], result: "void" },
+    atg_less: { parameters: ["buffer", "pointer", "pointer"], result: "void" },
     // atg_less_(int *, int, int)
-    atg_less_: { parameters: ["pointer", "i32", "i32"], result: "void" },
+    atg_less_: { parameters: ["buffer", "pointer", "pointer"], result: "void" },
     // atg_less_equal(int *, int, int)
     atg_less_equal: { parameters: ["pointer", "i32", "i32"], result: "void" },
     // atg_less_equal_(int *, int, int)
@@ -2647,9 +2647,9 @@ export function open(path: string) {
     // atg_less_equal_tensor_out(int *, int, int, int)
     atg_less_equal_tensor_out: { parameters: ["pointer", "i32", "i32", "i32"], result: "void" },
     // atg_less_scalar_out(int *, int, int, int)
-    atg_less_scalar_out: { parameters: ["pointer", "i32", "i32", "i32"], result: "void" },
+    atg_less_scalar_out: { parameters: ["buffer", "buffer", "pointer", "pointer"], result: "void" },
     // atg_less_tensor(int *, int, int)
-    atg_less_tensor: { parameters: ["pointer", "i32", "i32"], result: "void" },
+    atg_less_tensor: { parameters: ["buffer", "i32", "i32"], result: "void" },
     // atg_less_tensor_(int *, int, int)
     atg_less_tensor_: { parameters: ["pointer", "i32", "i32"], result: "void" },
     // atg_less_tensor_out(int *, int, int, int)
@@ -2901,7 +2901,7 @@ export function open(path: string) {
     // atg_log_sigmoid_out(int *, int, int)
     atg_log_sigmoid_out: { parameters: ["pointer", "i32", "i32"], result: "void" },
     // atg_log_softmax(int *, int, int, int)
-    atg_log_softmax: { parameters: ["pointer", "i32", "i32", "i32"], result: "void" },
+    atg_log_softmax: { parameters: ["buffer", "pointer", "i32", "i32"], result: "void" },
     // atg_log_softmax_int_out(int *, int, int, int, int)
     atg_log_softmax_int_out: { parameters: ["pointer", "i32", "i32", "i32", "i32"], result: "void" },
     // atg_logaddexp(int *, int, int)
@@ -3015,9 +3015,9 @@ export function open(path: string) {
     // atg_masked_select_out(int *, int, int, int)
     atg_masked_select_out: { parameters: ["pointer", "i32", "i32", "i32"], result: "void" },
     // atg_matmul(int *, int, int)
-    atg_matmul: { parameters: ["pointer", "i32", "i32"], result: "void" },
+    atg_matmul: { parameters: ["buffer", "pointer", "pointer"], result: "void" },
     // atg_matmul_out(int *, int, int, int)
-    atg_matmul_out: { parameters: ["pointer", "i32", "i32", "i32"], result: "void" },
+    atg_matmul_out: { parameters: ["buffer", "pointer", "i32", "i32"], result: "void" },
     // atg_matrix_exp(int *, int)
     atg_matrix_exp: { parameters: ["pointer", "i32"], result: "void" },
     // atg_matrix_exp_backward(int *, int, int)
@@ -3075,7 +3075,7 @@ export function open(path: string) {
     // atg_maximum_out(int *, int, int, int)
     atg_maximum_out: { parameters: ["pointer", "i32", "i32", "i32"], result: "void" },
     // atg_mean(int *, int, int)
-    atg_mean: { parameters: ["pointer", "i32", "i32"], result: "void" },
+    atg_mean: { parameters: ["buffer", "pointer", "i32"], result: "void" },
     // atg_mean_dim(int *, int, int *, int, int, int)
     atg_mean_dim: { parameters: ["pointer", "i32", "pointer", "i32", "i32", "i32"], result: "void" },
     // atg_mean_out(int *, int, int, int *, int, int, int)
@@ -3395,7 +3395,7 @@ export function open(path: string) {
     // atg_nextafter_out(int *, int, int, int)
     atg_nextafter_out: { parameters: ["pointer", "i32", "i32", "i32"], result: "void" },
     // atg_nll_loss(int *, int, int, int, int, int)
-    atg_nll_loss: { parameters: ["pointer", "i32", "i32", "i32", "i32", "i32"], result: "void" },
+    atg_nll_loss: { parameters: ["buffer", "pointer", "pointer", "i64", "i64", "i64"], result: "void" },
     // atg_nll_loss2d(int *, int, int, int, int, int)
     atg_nll_loss2d: { parameters: ["pointer", "i32", "i32", "i32", "i32", "i32"], result: "void" },
     // atg_nll_loss2d_backward(int *, int, int, int, int, int, int, int)
@@ -3641,7 +3641,7 @@ export function open(path: string) {
     // atg_rad2deg_out(int *, int, int)
     atg_rad2deg_out: { parameters: ["pointer", "i32", "i32"], result: "void" },
     // atg_rand(int *, int *, int, int, int)
-    atg_rand: { parameters: ["pointer", "pointer", "i32", "i32", "i32"], result: "void" },
+    atg_rand: { parameters: ["buffer", "buffer", "i32", "i32", "i32"], result: "void" },
     // atg_rand_like(int *, int)
     atg_rand_like: { parameters: ["pointer", "i32"], result: "void" },
     // atg_rand_like_out(int *, int, int)
@@ -3665,7 +3665,7 @@ export function open(path: string) {
     // atg_randint_out(int *, int, int, int *, int)
     atg_randint_out: { parameters: ["pointer", "i32", "i32", "pointer", "i32"], result: "void" },
     // atg_randn(int *, int *, int, int, int)
-    atg_randn: { parameters: ["pointer", "pointer", "i32", "i32", "i32"], result: "void" },
+    atg_randn: { parameters: ["buffer", "buffer", "i32", "i32", "i32"], result: "void" },
     // atg_randn_like(int *, int)
     atg_randn_like: { parameters: ["pointer", "i32"], result: "void" },
     // atg_randn_like_out(int *, int, int)
@@ -3737,7 +3737,7 @@ export function open(path: string) {
     // atg_reflection_pad3d_out(int *, int, int, int *, int)
     atg_reflection_pad3d_out: { parameters: ["pointer", "i32", "i32", "pointer", "i32"], result: "void" },
     // atg_relu(int *, int)
-    atg_relu: { parameters: ["pointer", "i32"], result: "void" },
+    atg_relu: { parameters: ["buffer", "pointer"], result: "void" },
     // atg_relu6(int *, int)
     atg_relu6: { parameters: ["pointer", "i32"], result: "void" },
     // atg_relu6_(int *, int)
@@ -3977,7 +3977,7 @@ export function open(path: string) {
     // atg_set_out(int *, int, int)
     atg_set_out: { parameters: ["pointer", "i32", "i32"], result: "void" },
     // atg_set_requires_grad(int *, int, int)
-    atg_set_requires_grad: { parameters: ["pointer", "i32", "i32"], result: "void" },
+    atg_set_requires_grad: { parameters: ["buffer", "pointer", "i32"], result: "void" },
     // atg_set_source_tensor(int *, int, int)
     atg_set_source_tensor: { parameters: ["pointer", "i32", "i32"], result: "void" },
     // atg_set_source_tensor_(int *, int, int)
@@ -4741,7 +4741,7 @@ export function open(path: string) {
     // atg_topk_values(int *, int, int, int, int, int, int, int)
     atg_topk_values: { parameters: ["pointer", "i32", "i32", "i32", "i32", "i32", "i32", "i32"], result: "void" },
     // atg_totype(int *, int, int)
-    atg_totype: { parameters: ["pointer", "i32", "i32"], result: "void" },
+    atg_totype: { parameters: ["buffer", "pointer", "i32"], result: "void" },
     // atg_trace(int *, int)
     atg_trace: { parameters: ["pointer", "i32"], result: "void" },
     // atg_trace_backward(int *, int, int *, int)
@@ -4831,7 +4831,7 @@ export function open(path: string) {
     // atg_uniform(int *, int, double, double)
     atg_uniform: { parameters: ["pointer", "i32", "f64", "f64"], result: "void" },
     // atg_uniform_(int *, int, double, double)
-    atg_uniform_: { parameters: ["pointer", "i32", "f64", "f64"], result: "void" },
+    atg_uniform_: { parameters: ["buffer", "pointer", "f64", "f64"], result: "void" },
     // atg_uniform_out(int *, int, int, double, double)
     atg_uniform_out: { parameters: ["pointer", "i32", "i32", "f64", "f64"], result: "void" },
     // atg_unique_consecutive(int *, int, int, int, int, int)
@@ -5009,7 +5009,7 @@ export function open(path: string) {
     // atg_vdot_out(int *, int, int, int)
     atg_vdot_out: { parameters: ["pointer", "i32", "i32", "i32"], result: "void" },
     // atg_view(int *, int, int *, int)
-    atg_view: { parameters: ["pointer", "i32", "pointer", "i32"], result: "void" },
+    atg_view: { parameters: ["buffer", "pointer", "buffer", "i32"], result: "void" },
     // atg_view_as(int *, int, int)
     atg_view_as: { parameters: ["pointer", "i32", "i32"], result: "void" },
     // atg_view_as_complex(int *, int)
@@ -5077,12 +5077,13 @@ export function open(path: string) {
     // atg_zero_out(int *, int, int)
     atg_zero_out: { parameters: ["pointer", "i32", "i32"], result: "void" },
     // atg_zeros(int *, int *, int, int, int)
-    atg_zeros: { parameters: ["pointer", "pointer", "i32", "i32", "i32"], result: "void" },
+    atg_zeros: { parameters: ["buffer", "buffer", "i32", "i32", "i32"], result: "void" },
     // atg_zeros_like(int *, int)
     atg_zeros_like: { parameters: ["pointer", "i32"], result: "void" },
     // atg_zeros_like_out(int *, int, int)
     atg_zeros_like_out: { parameters: ["pointer", "i32", "i32"], result: "void" },
     // atg_zeros_out(int *, int, int *, int)
     atg_zeros_out: { parameters: ["pointer", "i32", "pointer", "i32"], result: "void" },
+    ...symbols
   });
 }

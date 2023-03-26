@@ -1,10 +1,10 @@
 #!/usr/bin/env -S deno run --allow-run --allow-read --allow-env --allow-write --allow-net=deno.land
 
-import { $ } from "./x.js";
+import { $ } from "https://deno.land/x/dax/mod.ts";
 
 const out_dir = "./libtorch-extract/libtorch";
 async function prepare_libtorch_dir() {
-  const libtorch_env = Deno.env.get("LIBTORCH_DIR");
+  const libtorch_env = Deno.env.get("LIBTORCH_DIR"); //  LIBTORCH_DIR=/opt/homebrew/Cellar/pytorch/1.13.0
   if (exists(libtorch_env)) {
     return libtorch_env;
   }
@@ -76,5 +76,16 @@ if (unix) {
     -lc10
     -lc++
     -o libtch.dylib libtch.o`.printCommand();
+  }
+
+  if (!artifact("libtch.a")) {
+    await $`clang -arch arm64 -std=c++14 -ffunction-sections -fdata-sections -fpic -O3 -I ${dir}/include
+    -I ${dir}/include/torch/csrc/api/include
+    -Wl,-rpath,${dir}/lib
+    -D_GLIBCXX_USE_CXX11_ABI=${cxx11_abi}
+    -o libtch.a
+    -c libtch/torch_api.cpp
+    `.printCommand();
+
   }
 }

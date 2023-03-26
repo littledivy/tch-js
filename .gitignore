@@ -6,3 +6,4 @@ torch_sys/*.so
 torch_sys/*.dll
 
 .vscode
+examples/data
