@@ -54,7 +54,7 @@ function generate(c) {
     return CXChildVisitResult.CXChildVisit_Continue;
   });
 
-  return `export function open(path: string) {\n  return Deno.dlopen(path, {${s}  });\n}\n`;
+  return `export function open(path: string, symbols?: any) {\n  return Deno.dlopen(path, {${s}    ...symbols\n  });\n}\n`;
 }
 
 await Promise.all(
